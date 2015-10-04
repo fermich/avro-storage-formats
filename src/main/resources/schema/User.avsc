@@ -1,0 +1,10 @@
+{
+"name": "User",
+"type": "record",
+"namespace": "pl.fermich.avro.model",
+"fields": [
+  {"name": "login", "type": "string"},
+  {"name": "name", "type": "string"},
+  {"name": "age", "type": "int"}
+  ]
+}

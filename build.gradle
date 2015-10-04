@@ -1,0 +1,51 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile 'org.apache.hadoop:hadoop-common:2.5.0'
+    compile 'com.twitter:parquet-avro:1.6.0'
+    compile 'org.apache.avro:trevni-avro:1.7.7'
+    compile 'com.google.guava:guava:11.0.2'
+    compile 'org.apache.avro:avro:1.7.7'
+    compile 'org.slf4j:slf4j-api:1.7.12'
+    testCompile 'org.apache.hadoop:hadoop-hdfs:2.5.0'
+    testCompile 'org.apache.hadoop:hadoop-hdfs:2.5.0:tests'
+    testCompile 'org.apache.hadoop:hadoop-common:2.5.0:tests'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "http://clojars.org/repo" }
+    }
+    dependencies {
+        classpath 'org.apache.maven:maven-artifact:2.2.1'
+        classpath 'org.apache.avro:avro-compiler:1.7.6'
+        classpath 'org.clojars.miguno:avro-gradle-plugin:1.7.6'
+    }
+}
+
+apply plugin: 'avro-gradle-plugin'
+
+compileAvro {
+    source = 'src/main/resources/schema'
+    destinationDir = file("src/main/java")
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir compileAvro.destinationDir
+        }
+    }
+}
